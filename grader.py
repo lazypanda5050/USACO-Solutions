@@ -10,7 +10,7 @@ from pathlib import Path
 # ===========================
 cpp_file = "2017_jan_bronze_p2"        # Added .cpp extension
 zip_path = "./Test\ Data/2017_jan_bronze_p2.zip" # Path to your zip file
-timeout_seconds = 1 
+timeout_seconds = 2
 exe_file = "2025.exe" if sys.platform == "win32" else "./solution"
 
 # ===========================
