@@ -1,6 +1,6 @@
 /*
 keep map of values : number of cows with that values
-keep sorted deque of values
+keep sorted vector of values
 remove min(smallest time, largest time)
 */
 
@@ -12,7 +12,7 @@ int main(){
     freopen("pairup.out", "w", stdout);
     int n;
     cin >> n;
-    unordered_map<int, int> cows;
+    unordered_map<int, int> cows; // milk amount : # of cows
     vector<int> values;
 
     int x,y;
@@ -36,17 +36,17 @@ int main(){
         int bigValue = values[bigPointer];
 
         if (cows[smallValue] < cows[bigValue]){
-            // remove small pointer
+            // remove ones from small pointer
             cows[bigValue] -= cows[smallValue];
-            smallValue++;
+            smallPointer++;
         }
         else if (cows[smallValue] > cows[bigValue]){
-            // remove big pointer
+            // remove ones from big pointer
             cows[smallValue] -= cows[bigValue];
-            bigValue--;
+            bigPointer--;
         }
         else{
-            // cows are equal
+            // cows are equal in amount
             smallPointer++;
             bigPointer--;
         }
@@ -54,4 +54,3 @@ int main(){
 
     cout << ans << '\n';
 }
-// 2 5 5 8
