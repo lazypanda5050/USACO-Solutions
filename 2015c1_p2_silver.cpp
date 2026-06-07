@@ -2,7 +2,6 @@
 using namespace std;
 
 const long long maxCards = 1e5;
-
 int main(){
   freopen("highcard.in","r",stdin);
   freopen("highcard.out","w",stdout);
