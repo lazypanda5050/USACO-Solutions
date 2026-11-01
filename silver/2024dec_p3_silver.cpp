@@ -1,0 +1,90 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int n, q;
+int good_amt = 0;
+
+bool isValid(int r, int c) {
+  return r > -1 && c > -1 && r < n && c < n;
+}
+bool isBorder(int r, int c) {
+  return r == 0 || c == 0 || r == n - 1 || c == n - 1;
+}
+
+bool checkGood(vector<vector<char>> &grid, vector<vector<bool>> &good, int r, int c) {
+	if (grid[r][c] == '?' && isBorder(r, c)) { return true; }
+
+	if ((grid[r][c] == '?' || grid[r][c] == 'D') &&
+	    ((isValid(r + 1, c) && good[r + 1][c]) || (!isValid(r + 1, c)))) {
+		return true;
+	}
+
+	if ((grid[r][c] == '?' || grid[r][c] == 'U') &&
+	    ((isValid(r - 1, c) && good[r - 1][c]) || (!isValid(r - 1, c)))) {
+		return true;
+	}
+
+	if ((grid[r][c] == '?' || grid[r][c] == 'L') &&
+	    ((isValid(r, c - 1) && good[r][c - 1]) || (!isValid(r, c - 1)))) {
+		return true;
+	}
+
+	if ((grid[r][c] == '?' || grid[r][c] == 'R') &&
+	    ((isValid(r, c + 1) && good[r][c + 1]) || (!isValid(r, c + 1)))) {
+		return true;
+	}
+
+	return false;
+}
+
+void dfs(vector<vector<char>> &grid, vector<vector<bool>> &good, int r, int c) {
+	if (!isValid(r, c) || !checkGood(grid, good, r, c) || good[r][c]) {
+    return;
+  }
+
+	good[r][c] = true;
+	good_amt++;
+
+	dfs(grid, good, r + 1, c);
+	dfs(grid, good, r - 1, c);
+	dfs(grid, good, r, c + 1);
+	dfs(grid, good, r, c - 1);
+}
+
+int main() {
+	cin >> n >> q;
+
+	vector<vector<char>> grid(n, vector<char>(n, '?'));
+	vector<vector<bool>> good(n, vector<bool>(n, false));
+	vector<tuple<int, int, char>> queries(q);
+
+	for (auto &[r, c, t] : queries) {
+		cin >> r >> c >> t;
+
+		r--;
+		c--;
+
+		grid[r][c] = t;
+	}
+
+	reverse(queries.begin(), queries.end());
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+      dfs(grid, good, i, j);
+    }
+	}
+
+	vector<int> res;
+	for (auto [r, c, t] : queries) {
+		res.push_back(n * n - good_amt);
+
+		grid[r][c] = '?';
+		dfs(grid, good, r, c);
+	}
+
+	for (int i = res.size() - 1; i >= 0; i--) {
+    cout << res[i] << "\n";
+  }
+}
